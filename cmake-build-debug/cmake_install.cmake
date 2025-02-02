@@ -39,22 +39,22 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/_deps/juce-build/cmake_install.cmake")
+  include("/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/cmake-build-debug/_deps/juce-build/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/_deps/googletest-build/cmake_install.cmake")
+  include("/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/cmake-build-debug/_deps/googletest-build/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/plugin/cmake_install.cmake")
+  include("/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/cmake-build-debug/plugin/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/test/cmake_install.cmake")
+  include("/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/cmake-build-debug/test/cmake_install.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -72,6 +72,6 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-  file(WRITE "/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/${CMAKE_INSTALL_MANIFEST}"
+  file(WRITE "/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

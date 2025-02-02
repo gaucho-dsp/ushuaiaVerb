@@ -63,42 +63,412 @@ CMAKE_BINARY_DIR = "/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build"
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/UshuaiaVerb.dir/all
+all: _deps/juce-build/all
+all: _deps/googletest-build/all
+all: plugin/all
+all: test/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
-preinstall:
+preinstall: _deps/juce-build/preinstall
+preinstall: _deps/googletest-build/preinstall
+preinstall: plugin/preinstall
+preinstall: test/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/UshuaiaVerb.dir/clean
+clean: _deps/juce-build/clean
+clean: _deps/googletest-build/clean
+clean: plugin/clean
+clean: test/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/UshuaiaVerb.dir
+# Directory level rules for directory _deps/googletest-build
+
+# Recursive "all" directory target.
+_deps/googletest-build/all: _deps/googletest-build/googlemock/all
+.PHONY : _deps/googletest-build/all
+
+# Recursive "preinstall" directory target.
+_deps/googletest-build/preinstall: _deps/googletest-build/googlemock/preinstall
+.PHONY : _deps/googletest-build/preinstall
+
+# Recursive "clean" directory target.
+_deps/googletest-build/clean: _deps/googletest-build/googlemock/clean
+.PHONY : _deps/googletest-build/clean
+
+#=============================================================================
+# Directory level rules for directory _deps/googletest-build/googlemock
+
+# Recursive "all" directory target.
+_deps/googletest-build/googlemock/all: _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/all
+_deps/googletest-build/googlemock/all: _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/all
+_deps/googletest-build/googlemock/all: _deps/googletest-build/googletest/all
+.PHONY : _deps/googletest-build/googlemock/all
+
+# Recursive "preinstall" directory target.
+_deps/googletest-build/googlemock/preinstall: _deps/googletest-build/googletest/preinstall
+.PHONY : _deps/googletest-build/googlemock/preinstall
+
+# Recursive "clean" directory target.
+_deps/googletest-build/googlemock/clean: _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/clean
+_deps/googletest-build/googlemock/clean: _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/clean
+_deps/googletest-build/googlemock/clean: _deps/googletest-build/googletest/clean
+.PHONY : _deps/googletest-build/googlemock/clean
+
+#=============================================================================
+# Directory level rules for directory _deps/googletest-build/googletest
+
+# Recursive "all" directory target.
+_deps/googletest-build/googletest/all: _deps/googletest-build/googletest/CMakeFiles/gtest.dir/all
+_deps/googletest-build/googletest/all: _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/all
+.PHONY : _deps/googletest-build/googletest/all
+
+# Recursive "preinstall" directory target.
+_deps/googletest-build/googletest/preinstall:
+.PHONY : _deps/googletest-build/googletest/preinstall
+
+# Recursive "clean" directory target.
+_deps/googletest-build/googletest/clean: _deps/googletest-build/googletest/CMakeFiles/gtest.dir/clean
+_deps/googletest-build/googletest/clean: _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/clean
+.PHONY : _deps/googletest-build/googletest/clean
+
+#=============================================================================
+# Directory level rules for directory _deps/juce-build
+
+# Recursive "all" directory target.
+_deps/juce-build/all: _deps/juce-build/modules/all
+_deps/juce-build/all: _deps/juce-build/extras/Build/all
+.PHONY : _deps/juce-build/all
+
+# Recursive "preinstall" directory target.
+_deps/juce-build/preinstall: _deps/juce-build/modules/preinstall
+_deps/juce-build/preinstall: _deps/juce-build/extras/Build/preinstall
+.PHONY : _deps/juce-build/preinstall
+
+# Recursive "clean" directory target.
+_deps/juce-build/clean: _deps/juce-build/modules/clean
+_deps/juce-build/clean: _deps/juce-build/extras/Build/clean
+.PHONY : _deps/juce-build/clean
+
+#=============================================================================
+# Directory level rules for directory _deps/juce-build/extras/Build
+
+# Recursive "all" directory target.
+_deps/juce-build/extras/Build/all: _deps/juce-build/extras/Build/juceaide/all
+.PHONY : _deps/juce-build/extras/Build/all
+
+# Recursive "preinstall" directory target.
+_deps/juce-build/extras/Build/preinstall: _deps/juce-build/extras/Build/juceaide/preinstall
+.PHONY : _deps/juce-build/extras/Build/preinstall
+
+# Recursive "clean" directory target.
+_deps/juce-build/extras/Build/clean: _deps/juce-build/extras/Build/juceaide/clean
+.PHONY : _deps/juce-build/extras/Build/clean
+
+#=============================================================================
+# Directory level rules for directory _deps/juce-build/extras/Build/juceaide
+
+# Recursive "all" directory target.
+_deps/juce-build/extras/Build/juceaide/all:
+.PHONY : _deps/juce-build/extras/Build/juceaide/all
+
+# Recursive "preinstall" directory target.
+_deps/juce-build/extras/Build/juceaide/preinstall:
+.PHONY : _deps/juce-build/extras/Build/juceaide/preinstall
+
+# Recursive "clean" directory target.
+_deps/juce-build/extras/Build/juceaide/clean:
+.PHONY : _deps/juce-build/extras/Build/juceaide/clean
+
+#=============================================================================
+# Directory level rules for directory _deps/juce-build/modules
+
+# Recursive "all" directory target.
+_deps/juce-build/modules/all:
+.PHONY : _deps/juce-build/modules/all
+
+# Recursive "preinstall" directory target.
+_deps/juce-build/modules/preinstall:
+.PHONY : _deps/juce-build/modules/preinstall
+
+# Recursive "clean" directory target.
+_deps/juce-build/modules/clean:
+.PHONY : _deps/juce-build/modules/clean
+
+#=============================================================================
+# Directory level rules for directory plugin
+
+# Recursive "all" directory target.
+plugin/all: plugin/CMakeFiles/AudioPlugin.dir/all
+plugin/all: plugin/CMakeFiles/AudioPlugin_VST3.dir/all
+plugin/all: plugin/CMakeFiles/juce_vst3_helper.dir/all
+.PHONY : plugin/all
+
+# Recursive "preinstall" directory target.
+plugin/preinstall:
+.PHONY : plugin/preinstall
+
+# Recursive "clean" directory target.
+plugin/clean: plugin/CMakeFiles/AudioPlugin.dir/clean
+plugin/clean: plugin/CMakeFiles/AudioPlugin_All.dir/clean
+plugin/clean: plugin/CMakeFiles/AudioPlugin_VST3.dir/clean
+plugin/clean: plugin/CMakeFiles/juce_vst3_helper.dir/clean
+.PHONY : plugin/clean
+
+#=============================================================================
+# Directory level rules for directory test
+
+# Recursive "all" directory target.
+test/all: test/CMakeFiles/AudioPluginTest.dir/all
+.PHONY : test/all
+
+# Recursive "preinstall" directory target.
+test/preinstall:
+.PHONY : test/preinstall
+
+# Recursive "clean" directory target.
+test/clean: test/CMakeFiles/AudioPluginTest.dir/clean
+.PHONY : test/clean
+
+#=============================================================================
+# Target rules for target _deps/googletest-build/googlemock/CMakeFiles/gmock.dir
 
 # All Build rule for target.
-CMakeFiles/UshuaiaVerb.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/UshuaiaVerb.dir/build.make CMakeFiles/UshuaiaVerb.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/UshuaiaVerb.dir/build.make CMakeFiles/UshuaiaVerb.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" --progress-num=1,2 "Built target UshuaiaVerb"
-.PHONY : CMakeFiles/UshuaiaVerb.dir/all
+_deps/googletest-build/googlemock/CMakeFiles/gmock.dir/all: _deps/googletest-build/googletest/CMakeFiles/gtest.dir/all
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/depend
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" --progress-num=35,36 "Built target gmock"
+.PHONY : _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/UshuaiaVerb.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/UshuaiaVerb.dir/all
+_deps/googletest-build/googlemock/CMakeFiles/gmock.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" 4
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" 0
-.PHONY : CMakeFiles/UshuaiaVerb.dir/rule
+.PHONY : _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/rule
 
 # Convenience name for target.
-UshuaiaVerb: CMakeFiles/UshuaiaVerb.dir/rule
-.PHONY : UshuaiaVerb
+gmock: _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/rule
+.PHONY : gmock
 
 # clean rule for target.
-CMakeFiles/UshuaiaVerb.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/UshuaiaVerb.dir/build.make CMakeFiles/UshuaiaVerb.dir/clean
-.PHONY : CMakeFiles/UshuaiaVerb.dir/clean
+_deps/googletest-build/googlemock/CMakeFiles/gmock.dir/clean:
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/clean
+.PHONY : _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/clean
+
+#=============================================================================
+# Target rules for target _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir
+
+# All Build rule for target.
+_deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/all: _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/all
+_deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/all: _deps/googletest-build/googletest/CMakeFiles/gtest.dir/all
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/depend
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" --progress-num=37,38 "Built target gmock_main"
+.PHONY : _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/all
+
+# Build rule for subdir invocation for target.
+_deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" 6
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" 0
+.PHONY : _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/rule
+
+# Convenience name for target.
+gmock_main: _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/rule
+.PHONY : gmock_main
+
+# clean rule for target.
+_deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/clean:
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/clean
+.PHONY : _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/clean
+
+#=============================================================================
+# Target rules for target _deps/googletest-build/googletest/CMakeFiles/gtest.dir
+
+# All Build rule for target.
+_deps/googletest-build/googletest/CMakeFiles/gtest.dir/all:
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest.dir/depend
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" --progress-num=39,40 "Built target gtest"
+.PHONY : _deps/googletest-build/googletest/CMakeFiles/gtest.dir/all
+
+# Build rule for subdir invocation for target.
+_deps/googletest-build/googletest/CMakeFiles/gtest.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/googletest-build/googletest/CMakeFiles/gtest.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" 0
+.PHONY : _deps/googletest-build/googletest/CMakeFiles/gtest.dir/rule
+
+# Convenience name for target.
+gtest: _deps/googletest-build/googletest/CMakeFiles/gtest.dir/rule
+.PHONY : gtest
+
+# clean rule for target.
+_deps/googletest-build/googletest/CMakeFiles/gtest.dir/clean:
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest.dir/clean
+.PHONY : _deps/googletest-build/googletest/CMakeFiles/gtest.dir/clean
+
+#=============================================================================
+# Target rules for target _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir
+
+# All Build rule for target.
+_deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/all: _deps/googletest-build/googletest/CMakeFiles/gtest.dir/all
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/depend
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" --progress-num=41,42 "Built target gtest_main"
+.PHONY : _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/all
+
+# Build rule for subdir invocation for target.
+_deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" 4
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" 0
+.PHONY : _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/rule
+
+# Convenience name for target.
+gtest_main: _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/rule
+.PHONY : gtest_main
+
+# clean rule for target.
+_deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/clean:
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/clean
+.PHONY : _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/clean
+
+#=============================================================================
+# Target rules for target plugin/CMakeFiles/AudioPlugin.dir
+
+# All Build rule for target.
+plugin/CMakeFiles/AudioPlugin.dir/all:
+	$(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/AudioPlugin.dir/build.make plugin/CMakeFiles/AudioPlugin.dir/depend
+	$(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/AudioPlugin.dir/build.make plugin/CMakeFiles/AudioPlugin.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19 "Built target AudioPlugin"
+.PHONY : plugin/CMakeFiles/AudioPlugin.dir/all
+
+# Build rule for subdir invocation for target.
+plugin/CMakeFiles/AudioPlugin.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" 19
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 plugin/CMakeFiles/AudioPlugin.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" 0
+.PHONY : plugin/CMakeFiles/AudioPlugin.dir/rule
+
+# Convenience name for target.
+AudioPlugin: plugin/CMakeFiles/AudioPlugin.dir/rule
+.PHONY : AudioPlugin
+
+# clean rule for target.
+plugin/CMakeFiles/AudioPlugin.dir/clean:
+	$(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/AudioPlugin.dir/build.make plugin/CMakeFiles/AudioPlugin.dir/clean
+.PHONY : plugin/CMakeFiles/AudioPlugin.dir/clean
+
+#=============================================================================
+# Target rules for target plugin/CMakeFiles/AudioPlugin_All.dir
+
+# All Build rule for target.
+plugin/CMakeFiles/AudioPlugin_All.dir/all: plugin/CMakeFiles/AudioPlugin_VST3.dir/all
+	$(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/AudioPlugin_All.dir/build.make plugin/CMakeFiles/AudioPlugin_All.dir/depend
+	$(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/AudioPlugin_All.dir/build.make plugin/CMakeFiles/AudioPlugin_All.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" --progress-num= "Built target AudioPlugin_All"
+.PHONY : plugin/CMakeFiles/AudioPlugin_All.dir/all
+
+# Build rule for subdir invocation for target.
+plugin/CMakeFiles/AudioPlugin_All.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" 34
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 plugin/CMakeFiles/AudioPlugin_All.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" 0
+.PHONY : plugin/CMakeFiles/AudioPlugin_All.dir/rule
+
+# Convenience name for target.
+AudioPlugin_All: plugin/CMakeFiles/AudioPlugin_All.dir/rule
+.PHONY : AudioPlugin_All
+
+# clean rule for target.
+plugin/CMakeFiles/AudioPlugin_All.dir/clean:
+	$(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/AudioPlugin_All.dir/build.make plugin/CMakeFiles/AudioPlugin_All.dir/clean
+.PHONY : plugin/CMakeFiles/AudioPlugin_All.dir/clean
+
+#=============================================================================
+# Target rules for target plugin/CMakeFiles/AudioPlugin_VST3.dir
+
+# All Build rule for target.
+plugin/CMakeFiles/AudioPlugin_VST3.dir/all: plugin/CMakeFiles/juce_vst3_helper.dir/all
+plugin/CMakeFiles/AudioPlugin_VST3.dir/all: plugin/CMakeFiles/AudioPlugin.dir/all
+	$(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/AudioPlugin_VST3.dir/build.make plugin/CMakeFiles/AudioPlugin_VST3.dir/depend
+	$(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/AudioPlugin_VST3.dir/build.make plugin/CMakeFiles/AudioPlugin_VST3.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" --progress-num=22,23,24,25,26,27,28,29,30,31,32,33,34 "Built target AudioPlugin_VST3"
+.PHONY : plugin/CMakeFiles/AudioPlugin_VST3.dir/all
+
+# Build rule for subdir invocation for target.
+plugin/CMakeFiles/AudioPlugin_VST3.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" 34
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 plugin/CMakeFiles/AudioPlugin_VST3.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" 0
+.PHONY : plugin/CMakeFiles/AudioPlugin_VST3.dir/rule
+
+# Convenience name for target.
+AudioPlugin_VST3: plugin/CMakeFiles/AudioPlugin_VST3.dir/rule
+.PHONY : AudioPlugin_VST3
+
+# clean rule for target.
+plugin/CMakeFiles/AudioPlugin_VST3.dir/clean:
+	$(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/AudioPlugin_VST3.dir/build.make plugin/CMakeFiles/AudioPlugin_VST3.dir/clean
+.PHONY : plugin/CMakeFiles/AudioPlugin_VST3.dir/clean
+
+#=============================================================================
+# Target rules for target plugin/CMakeFiles/juce_vst3_helper.dir
+
+# All Build rule for target.
+plugin/CMakeFiles/juce_vst3_helper.dir/all:
+	$(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/juce_vst3_helper.dir/build.make plugin/CMakeFiles/juce_vst3_helper.dir/depend
+	$(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/juce_vst3_helper.dir/build.make plugin/CMakeFiles/juce_vst3_helper.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" --progress-num=43,44 "Built target juce_vst3_helper"
+.PHONY : plugin/CMakeFiles/juce_vst3_helper.dir/all
+
+# Build rule for subdir invocation for target.
+plugin/CMakeFiles/juce_vst3_helper.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 plugin/CMakeFiles/juce_vst3_helper.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" 0
+.PHONY : plugin/CMakeFiles/juce_vst3_helper.dir/rule
+
+# Convenience name for target.
+juce_vst3_helper: plugin/CMakeFiles/juce_vst3_helper.dir/rule
+.PHONY : juce_vst3_helper
+
+# clean rule for target.
+plugin/CMakeFiles/juce_vst3_helper.dir/clean:
+	$(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/juce_vst3_helper.dir/build.make plugin/CMakeFiles/juce_vst3_helper.dir/clean
+.PHONY : plugin/CMakeFiles/juce_vst3_helper.dir/clean
+
+#=============================================================================
+# Target rules for target test/CMakeFiles/AudioPluginTest.dir
+
+# All Build rule for target.
+test/CMakeFiles/AudioPluginTest.dir/all: _deps/googletest-build/googletest/CMakeFiles/gtest.dir/all
+test/CMakeFiles/AudioPluginTest.dir/all: _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/all
+test/CMakeFiles/AudioPluginTest.dir/all: plugin/CMakeFiles/AudioPlugin.dir/all
+	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/AudioPluginTest.dir/build.make test/CMakeFiles/AudioPluginTest.dir/depend
+	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/AudioPluginTest.dir/build.make test/CMakeFiles/AudioPluginTest.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" --progress-num=20,21 "Built target AudioPluginTest"
+.PHONY : test/CMakeFiles/AudioPluginTest.dir/all
+
+# Build rule for subdir invocation for target.
+test/CMakeFiles/AudioPluginTest.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" 25
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/CMakeFiles/AudioPluginTest.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles" 0
+.PHONY : test/CMakeFiles/AudioPluginTest.dir/rule
+
+# Convenience name for target.
+AudioPluginTest: test/CMakeFiles/AudioPluginTest.dir/rule
+.PHONY : AudioPluginTest
+
+# clean rule for target.
+test/CMakeFiles/AudioPluginTest.dir/clean:
+	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/AudioPluginTest.dir/build.make test/CMakeFiles/AudioPluginTest.dir/clean
+.PHONY : test/CMakeFiles/AudioPluginTest.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
@@ -107,6 +477,7 @@ CMakeFiles/UshuaiaVerb.dir/clean:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
+	$(CMAKE_COMMAND) -P "/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/build/CMakeFiles/VerifyGlobs.cmake"
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

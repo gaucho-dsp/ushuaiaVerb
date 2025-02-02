@@ -1,0 +1,4 @@
+Cannot generate into /Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/cmake-build-debug
+It was created with incompatible generator 'Unix Makefiles'
+
+Please either delete it manually or select another generation directory
