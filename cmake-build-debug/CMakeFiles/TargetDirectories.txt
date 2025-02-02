@@ -1,0 +1,3 @@
+/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/cmake-build-debug/CMakeFiles/UshuaiaVerb.dir
+/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/cucu/Developer/gaucho dsp/Ushuaia/UshuaiaVerb/cmake-build-debug/CMakeFiles/rebuild_cache.dir
