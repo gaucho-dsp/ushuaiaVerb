@@ -1,5 +1,5 @@
 //
-// Created by Cucu on 02/02/2025.
+// Created by Facundo Franchino on 02/02/2025.
 //
 #define JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED 1
 #include "juce_core/juce_core.h"
