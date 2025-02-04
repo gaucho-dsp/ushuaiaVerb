@@ -3,7 +3,6 @@
 //
 #ifndef USHUAIAVERB_H
 #define USHUAIAVERB_H
-#endif //USHUAIAVERB_H
 
 #include <set>
 #include <string>
@@ -12,10 +11,10 @@
 enum {
   mixParam=0, //mix (wet/dry) control
   numParameters=1 //number of parameters in the plugin
-}
+};
 
-const int predelay=1014; vlfpredelay=1100; //main pre-delay prior to reflections starting
-//bass reverb (VLF=very low frequencies) pre-delay to prevent excesssive low freq build up,for a clearer reverb
+const int predelay=1014;//main pre-delay prior to reflections starting
+const int vlfpredelay=1100;//bass reverb (VLF=very low frequencies) pre-delay to prevent excesssive low freq build up,for a clearer reverb
 
 /*the following values will define short delay times (early reflections).
 small and fast echoes prior to the main reverb tail happening.
@@ -56,3 +55,52 @@ const int uNumPrograms= 0; //no presets for now
 const int uNumInputs=2; //stereo in
 const int uNumOutputs=2; //stereo out
 const unsigned long uUniqueId= 'ushv'; //unique identifier for ushuaiaVerb
+
+
+/*now let's declare the interface of the class, how the plugin interacts with the DAW
+and how parameters, audio processing and metadata will be handled
+*/
+
+//class declaration
+class ushuaiaVerbAudioProcessor :public juce::AudioProcessor{
+  public:
+    ushuaiaVerbAudioProcessor();
+    ~ushuaiaVerbAudioProcessor() override;//destructor, it cleans up resources if needed
+
+    //plugin emtadata
+    const juce::String getName() const override;
+    juce::AudioProcessor::BusesProperties getBusesProperties() const override;
+    bool acceptsMidi() const override { return false; }
+    bool producesMidi() const override { return false; }
+    bool isMidiEffect() const override { return false; }
+    double getTailLengthSeconds() const override { return 2.0; } //default rev tail of 2s
+
+    //audio processing
+    void prepareToPlay(double sampleRate, int samplesPerBlock) override;
+    void releaseResources() override;
+    void processBlock(juce::AudioBuffer<float>& buffer) override;
+
+    //parametr handling
+    float getParameter (int id) const override;
+    void setParameter (int id, float value) override;
+
+    //preset and state mgmt
+    void getStateInformation (juce::MemoryBlock& destData) override;
+    void setStateInformation (const void *data, int sizeInBytes) override;
+
+
+
+
+
+
+
+
+
+
+
+
+
+#endif //USHUAIAVERB_H
+
+
+
