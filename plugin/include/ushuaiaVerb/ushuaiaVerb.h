@@ -6,7 +6,7 @@
 
 #include <set>
 #include <string>
-#include <math.h>
+#include <cmath>
 
 enum {
   mixParam=0, //mix (wet/dry) control
@@ -321,15 +321,64 @@ L and R represent stereo processing obvs
     int countVLF; //very low freq buffer pos tracker
     int cycle; //hw often processing updates values
 
+//enum definition for indexing filter stages
+    enum {
+      //slew rate controls how fast the signal can change
+      //by controlling it we prevent sudden fast jumps that may create harsh transients and distortion
+      //pearson filter is a type of smoothing filter to remove high freq noise
+      //rev can create harsh and unnatural high freq content
+      //this filter smooths the signal before it's processed by the delay lines
+      //prevents aliasing
+        prevSampL1, prevSlewL1,
+        prevSampR1, prevSlewR1,
+        prevSampL2, prevSlewL2,
+        prevSampR2, prevSlewR2,
+        prevSampL3, prevSlewL3,
+        prevSampR3, prevSlewR3,
+        prevSampL4, prevSlewL4,
+        prevSampR4, prevSlewR4,
+        prevSampL5, prevSlewL5,
+        prevSampR5, prevSlewR5,
+        prevSampL6, prevSlewL6,
+        prevSampR6, prevSlewR6,
+        prevSampL7, prevSlewL7,
+        prevSampR7, prevSlewR7,
+        prevSampL8, prevSlewL8,
+        prevSampR8, prevSlewR8,
+        prevSampL9, prevSlewL9,
+        prevSampR9, prevSlewR9,
+        prevSampL10, prevSlewL10,
+        prevSampR10, prevSlewR10,
+        pear_total  //total number of elements in the enum
+    };
 
+//now declare an array using the enum indices
+    double pearsonFilter[pear_total] = {0.0}; //storagr for previous samples and slew rates
 
+//defining pearson filter storage for multiple filtering stages
+    static constexpr int pearStages =6; //number of filter stages
+    static constexpr int pearTotal= pear_total; //match the enum indexing
 
+    std::array<std::array<double, pearTotal>, pearStages> pearsonFilters = {};
 
+    //vibrato mod for stereo processing
+    double vibratoL = 0.0, vibratoR = 0.0;
+    double vibA_L = 0.0, vibA_R = 0.0;
+    double vibB_L = 0.0, vibB_R = 0.0;
 
+    //subharmonic processing dor depth in low frequencies
+    double subL_A = 0.0, subR_A = 0.0;
+    double subL_B = 0.0, subR_B = 0.0;
+    double subL_C = 0.0, subR_C = 0.0;
 
+    //buffered subharmonic values for additional processing
+    double subBufferL_A = 0.0, subBufferR_A = 0.0;
+    double subBufferL_B = 0.0, subBufferR_B = 0.0;
+    double subBufferL_C = 0.0, subBufferR_C = 0.0;
 
-
-
+    //floating point dithering state for precision
+    uint32_t fpdL=1,fpdR=1;
+    std::unique_ptr<juce::AudioProcessorValueTreeState> parameters;
 
 #endif //USHUAIAVERB_H
 
