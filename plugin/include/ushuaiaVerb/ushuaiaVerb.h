@@ -377,7 +377,7 @@ L and R represent stereo processing obvs
     double subBufferL_C = 0.0, subBufferR_C = 0.0;
 
     //floating point dithering state for precision
-    uint32_t fpdL=1,fpdR=1;
+    uint32_t fpdL,fpdR;
     std::unique_ptr<juce::AudioProcessorValueTreeState> parameters;
 
 #endif //USHUAIAVERB_H
