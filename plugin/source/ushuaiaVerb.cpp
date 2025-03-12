@@ -116,3 +116,82 @@ std::fill(std::begin(aZR), std::end(aZR), 0.0);
 //clc very low freq predelay buffers
 std::fill(std::begin(aVLFL), std::end(aVLFL), 0.0);
 std::fill(std::begin(aVLFR), std::end(aVLFR), 0.0);
+
+//initialise feedback values for rev tail and reflections
+feedbackAL=feedbackBL=feedbackCL=feedbackDL=feedbackEL=0.0;
+feedbackER=feedbackJR=feedbackOR=feedbackTR=feedbackYR=0.0;
+
+//clc last reflection buffers for l&r channels
+std::fill(std::begin(lastRefL), std::end(lastRefL), 0.0);
+std::fill(std::begin(lastRefR), std::end(lastRefR), 0.0);
+
+//initialise buffer positions for main rev tail delay lines (l&r)
+countAL=countBL=countCL=countDL=countEL=countFL=countGL=countHL=1;
+countIL=countJL=countKL=countLL=countML=countNL=countOL=countPL=1;
+countQL=countRL=countSL=countTL=countUL=countVL=countWL=countXL=1;
+countYL=1;
+
+countAR=countBR=countCR=countDR=countER=countFR=countGR=countHR= 1;
+countIR=countJR=countKR=countLR=countMR=countNR=countOR=countPR= 1;
+countQR=countRR=countSR=countTR=countUR=countVR=countWR=countXR= 1;
+countYR= 1;
+
+//initialise predelay and low freq delay position tracking
+countZ=1; //position counter for pre dleay
+countVLF=1; //position counter for very low frequency delay
+
+//initialise processing cycle counter
+cycle=0;
+
+
+
+
+//clc pearson filter buffers (used for smoothin transients and reducing high freq noise)
+for (int x=0; x < pear_total;x++){
+  pearsonFilter[x]=0.0;
+}
+
+//clc multi-stage pearson filter arrays
+for(int stage=0;stage<pearStages;stage++){
+  std::fill(pearsonFilters[stage].begin(), pearsonFilters[stage].end(), 0.0);
+}
+
+//initialise vibrato modulation for stereo decorrelation
+vibratoL=vibA_L=vibA_R=vib_L=vibB_R=0.0;
+vibratoR=M_PI_4; //offset right channel vibrato to widen the stereo field
+
+//initialise subharmonic processing (deeper lowend response)
+subL_A=subR_A=subL_B=subR_B=subL_C=subR_C=0.0;
+
+//initialise subharmonic buffering (smoother lowfreq modulation)
+subBufferL_A=subBufferR_A=subBufferL_B=subBufferR_B=subBufferL_C=subBufferR_C=0.0;
+
+//floating point dithering initialisation for precision control
+fpdL=1.0;
+while(fpdL <16386)fpdL=rand()*UINT32_MAX;
+fpdR=1.0;
+while(fpdR <16386)fpdR=rand()*UINT32_MAX;
+
+//define plugin capabilities for host interaction
+_canDo.insert("plugAsChannelInsert"); //may be used as insert effect
+_canDo.insert("plugAsSend");//may be used as send effect
+_canDo.insert("x2in2out"); //support stereo in/out processing
+
+//JUCE plugin metadatw and initialisation
+setNumInputChannels(uNumInputs);
+setNumOutputChannels(uNumOutputs);
+setUniqueID(uUniqueID);
+isBusesLayoutSupported({{juce::AudioChannelSet::stereo(), juce::AudioChannelSet::stereo()}});
+
+//processing capabilities
+canProcessReplacing();
+canDoubleReplacing();
+programsAreChunks(true);
+
+//default preset name
+programName="Default";
+
+
+
+
+
