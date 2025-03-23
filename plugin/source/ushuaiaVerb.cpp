@@ -191,6 +191,94 @@ programsAreChunks(true);
 //default preset name
 programName="Default";
 
+//destructor
+ushuaiaVerbAudioProcessor::~ushuaiaVerbAudioProcessor() {}
+
+//program name accessors (JUCE doesn't really use this, but I'll follow convention)
+void ushuaiaVerbAudioProcessor::setProgramName(const juce::String& newName) {
+  programName = newName;
+}
+
+const juce::String ushuaiaVerbAudioProcessor::getProgramName() {
+  return programName;
+}
+
+//optional vendor version accessor (internal use mostly)
+int ushuaiaVerbAudioProcessor::getVendorVersion() const {
+  return 1000;
+}
+
+//utility function to constrain parameter values within [0.0, 1.0] range
+namespace {
+  float pinParameter(float value) {
+    return juce::jlimit(0.0f, 1.0f, value);
+  }
+}
+
+
+void ushuaiaVerbAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
+{
+  //serialise state, just the mix parameter for now
+  float currentMix = pinParameter(getParameter(mixParam));
+  destData.replaceWith(&currentMix, sizeof(float));
+}
+
+void ushuaiaVerbAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
+{
+  //basic validation and deserialisation
+  if (sizeInBytes == sizeof(float)) {
+    float restoredMix;
+    std::memcpy(&restoredMix, data, sizeof(float));
+    setParameter(mixParam, pinParameter(restoredMix));
+  }
+}
+
+//called by host to get current program name
+void ushuaiaVerbAudioProcessor::getProgramName(char* name)
+{
+  std::strncpy(name, programName.toRawUTF8(), juce::AudioProcessor::getProgramName(0).length());
+}
+
+//called by host to set program name (not used here)
+void ushuaiaVerbAudioProcessor::setProgramName(char* name)
+{
+  programName = name;
+}
+
+//plugin tail length in seconds (for DAW automation, bypass fades etc.)
+double ushuaiaVerbAudioProcessor::getTailLengthSeconds() const
+{
+  return 2.0;
+}
+
+//used for VST2-like plugin capability querying
+int ushuaiaVerbAudioProcessor::canDo(char* text)
+{
+  if (_canDo.find(text) != _canDo.end()) return 1;
+  return -1;
+}
+
+//get plugin category
+juce::AudioProcessor::PluginCategory ushuaiaVerbAudioProcessor::getPluginCategory() const
+{
+  return juce::AudioProcessor::PluginCategory::Effect;
+}
+
+//optional: metadata strings
+bool ushuaiaVerbAudioProcessor::getEffectName(char* name)
+{
+  std::strncpy(name, "UshuaiaVerb", 64); return true;
+}
+
+bool ushuaiaVerbAudioProcessor::getProductString(char* text)
+{
+  std::strncpy(text, "ushuaiaVerb", 64); return true;
+}
+
+bool ushuaiaVerbAudioProcessor::getVendorString(char* text)
+{
+  std::strncpy(text, "gaucho dsp", 64); return true;
+}
 
 
 
