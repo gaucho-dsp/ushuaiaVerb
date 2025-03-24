@@ -1,5 +1,7 @@
 #pragma once
+
 #include <juce_audio_processors/juce_audio_processors.h>
+
 //==============================================================================
 class AudioPluginAudioProcessor final : public juce::AudioProcessor
 {
@@ -39,7 +41,17 @@ public:
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+
+    //==============================================================================
+    //reverb processing function (defined in ushuaiaVerbProc.cpp)
+    void processUshuaiaVerb (float* inL, float* inR, float* outL, float* outR, int numSamples);
+
 private:
     //==============================================================================
+    //internal reverb state
+    int cycle = 0;
+    int predelaySamples = 0;
+    int vlfPredelaySamples = 0;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessor)
 };
