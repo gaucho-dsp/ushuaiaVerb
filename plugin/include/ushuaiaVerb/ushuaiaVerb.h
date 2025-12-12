@@ -4,23 +4,22 @@
 #ifndef USHUAIAVERB_H
 #define USHUAIAVERB_H
 
+#include <juce_audio_processors/juce_audio_processors.h>
 #include <set>
 #include <string>
 #include <cmath>
+#include <array>
+#include <vector>
 
 enum {
   mixParam=0, //mix (wet/dry) control
   numParameters=1 //number of parameters in the plugin
 };
 
-const int predelay=1014;//main pre-delay prior to reflections starting
-const int vlfpredelay=1100;//bass reverb (VLF=very low frequencies) pre-delay to prevent excesssive low freq build up,for a clearer reverb
+const int predelay=1014;
+const int vlfpredelay=11000;
 
-/*the following values will define short delay times (early reflections).
-small and fast echoes prior to the main reverb tail happening.
-shortX value is delay length in samples.
-convrt it to milliseconds using time(ms)=(samples/44100)*1000
-*/
+//short delay times (early reflections)
 const int shortA = 78; const int shortB = 760;
 const int shortC = 982; const int shortD = 528;
 const int shortE = 445; const int shortF = 1128;
@@ -30,14 +29,7 @@ const int shortK = 354; const int shortL = 1169;
 const int shortM = 11; const int shortN = 2782;
 const int shortO = 58; const int shortP = 1515;
 
-/*the following values will define longer delay times
-they spread out reflections over time to create a lush revb tail,
-longer delays create sense of larger spaces and shape the rev decay
-used in the main reverb tail, post-early reflections
-delayX value is delay length in samples
-convrt it to milliseconds using time(ms)=(samples/44100)*1000
-*/
-
+//long delay times (reverb tank)
 const int delayA = 871; const int delayB = 1037;
 const int delayC = 1205; const int delayD = 297;
 const int delayE = 467; const int delayF = 884;
@@ -51,336 +43,152 @@ const int delayS = 1468; const int delayT = 1102;
 const int delayU = 11; const int delayV = 1119;
 const int delayW = 1315; const int delayX = 94; const int delayY = 1270;
 
-const int uNumPrograms= 0; //no presets for now
-const int uNumInputs=2; //stereo in
-const int uNumOutputs=2; //stereo out
-const unsigned long uUniqueId= 'ushv'; //unique identifier for ushuaiaVerb
+const int uNumPrograms= 0; 
+const int uNumInputs=2; 
+const int uNumOutputs=2; 
+const unsigned long uUniqueId= 'ushv'; 
 
-
-/*now let's declare the interface of the class, how the plugin interacts with the DAW
-and how parameters, audio processing and metadata will be handled
-*/
-
-//class declaration
-class ushuaiaVerbAudioProcessor :public juce::AudioProcessor{
+class ushuaiaVerbAudioProcessor : public juce::AudioProcessor {
   public:
     ushuaiaVerbAudioProcessor();
-    ~ushuaiaVerbAudioProcessor() override;//destructor, it cleans up resources if needed
+    ~ushuaiaVerbAudioProcessor() override;
 
-    //plugin emtadata
+    //standard JUCE methods
     const juce::String getName() const override;
-    juce::AudioProcessor::BusesProperties getBusesProperties() const override;
     bool acceptsMidi() const override { return false; }
     bool producesMidi() const override { return false; }
     bool isMidiEffect() const override { return false; }
-    double getTailLengthSeconds() const override {
-      return 2.0; } //default rev tail of 2s
+    double getTailLengthSeconds() const override { return 2.0; } 
+    bool isBusesLayoutSupported(const BusesLayout& layouts) const override;
 
-    //audio processing
     void prepareToPlay(double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
-    void processBlock(juce::AudioBuffer<float>& buffer) override;
+    void processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages) override;
+    
+    juce::AudioProcessorEditor* createEditor() override;
+    bool hasEditor() const override;
 
-    //parametr handling
-    float getParameter (int id) const override;
-    void setParameter (int id, float value) override;
+    //helper for parameter access in DSP function
+    float getParameterValue(int index) const {
+        if (index == mixParam) return mixValue; //use our mix value
+        return 0.0f;
+    }
+    
+    void setMixValue(float mix) { mixValue = mix; }
 
-    //preset and state mgmt
+    //param /state methods
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void *data, int sizeInBytes) override;
+    void setParameterValue(int index, float value);
+    
+    //program methods
+    const juce::String getProgramName(int index) override { juce::ignoreUnused(index); return {}; }
+    void changeProgramName(int index, const juce::String& newName) override { juce::ignoreUnused(index, newName); }
+    int getNumPrograms() override { return 1; }
+    int getCurrentProgram() override { return 0; }
+    void setCurrentProgram(int index) override { juce::ignoreUnused(index); }
+    
+    //legacy /extra methods
+    void getProgramName(char* name);
+    void setProgramName(char* name);
+    
+    //VST2/compatibility helpers
+    int canDo(char* text);
+    int getVendorVersion() const;
+    void setProgramName(const juce::String& newName);
+    const juce::String getProgramName();
+    bool getEffectName(char* name);
+    bool getProductString(char* text);
+    bool getVendorString(char* text);
 
-    //now onto writing the private member section of the class
-  private:
-    juce::String programName;
+// =============================================================================
+//pub data members (required for processUshuaiaVerb access)
+// =============================================================================
+    
+    //gain
     double gainOutL;
     double gainOutR;
 
-/*now lets store delay buffers in separate arrays
-the size of each array is based on the corresponding shortX delay time
-plus 5 extra samples to avoid buffer overflows. each array represents a delay line!
-reverb processed audio by reading pasr samples from these bufffers.
-L and R represent stereo processing obvs
-*/
+    //early reflection buffers
+    double eAL[shortA+5], eBL[shortB+5], eCL[shortC+5], eDL[shortD+5];
+    double eEL[shortE+5], eFL[shortF+5], eGL[shortG+5], eHL[shortH+5];
+    double eIL[shortI+5], eJL[shortJ+5], eKL[shortK+5], eLL[shortL+5];
+    double eML[shortM+5], eNL[shortN+5], eOL[shortO+5], ePL[shortP+5];
+    
+    double eAR[shortA+5], eBR[shortB+5], eCR[shortC+5], eDR[shortD+5];
+    double eER[shortE+5], eFR[shortF+5], eGR[shortG+5], eHR[shortH+5];
+    double eIR[shortI+5], eJR[shortJ+5], eKR[shortK+5], eLR[shortL+5];
+    double eMR[shortM+5], eNR[shortN+5], eOR[shortO+5], ePR[shortP+5];
 
-//separating buffers for L and R channels to create a wide stereo field
-//stereo decorrelation, it creates a wider rev by making LR reflections slightly different
-    //left channel early reflections
-    double eAL[shortA+5]; //early reflection delay line A (L)
-    double eBL[shortB+5]; //y asi sucesivamente
-    double eCL[shortC+5];
-    double eDL[shortD+5];
-    double eEL[shortE+5];
-    double eFL[shortF+5];
-    double eGL[shortG+5];
-    double eHL[shortH+5];
-    double eIL[shortI+5];
-    double eJL[shortJ+5];
-    double eKL[shortK+5];
-    double eLL[shortL+5];
-    double eML[shortM+5];
-    double eNL[shortN+5];
-    double eOL[shortO+5];
-    double ePL[shortP+5];
+    // ER counters
+    int shortAL, shortBL, shortCL, shortDL, shortEL, shortFL, shortGL, shortHL;
+    int shortIL, shortJL, shortKL, shortLL, shortML, shortNL, shortOL, shortPL;
+    int shortAR, shortBR, shortCR, shortDR, shortER, shortFR, shortGR, shortHR;
+    int shortIR, shortJR, shortKR, shortLR, shortMR, shortNR, shortOR, shortPR;
 
-    //right channel early reflections
-    double eAR[shortA+5]; //early reflection delay line A (R)
-    double eBR[shortB+5]; //y de nuevo asi sucesviamente
-    double eCR[shortC+5];
-    double eDR[shortD+5];
-    double eER[shortE+5];
-    double eFR[shortF+5];
-    double eGR[shortG+5];
-    double eHR[shortH+5];
-    double eIR[shortI+5];
-    double eJR[shortJ+5];
-    double eKR[shortK+5];
-    double eLR[shortL+5];
-    double eMR[shortM+5];
-    double eNR[shortN+5];
-    double eOR[shortO+5];
-    double ePR[shortP+5];
+    //main tank buffers
+    double aAL[delayA+5], aBL[delayB+5], aCL[delayC+5], aDL[delayD+5], aEL[delayE+5];
+    double aFL[delayF+5], aGL[delayG+5], aHL[delayH+5], aIL[delayI+5], aJL[delayJ+5];
+    double aKL[delayK+5], aLL[delayL+5], aML[delayM+5], aNL[delayN+5], aOL[delayO+5];
+    double aPL[delayP+5], aQL[delayQ+5], aRL[delayR+5], aSL[delayS+5], aTL[delayT+5];
+    double aUL[delayU+5], aVL[delayV+5], aWL[delayW+5], aXL[delayX+5], aYL[delayY+5];
 
-//tracks buffer positions for early reflection delay lines L/R
+    double aAR[delayA+5], aBR[delayB+5], aCR[delayC+5], aDR[delayD+5], aER[delayE+5];
+    double aFR[delayF+5], aGR[delayG+5], aHR[delayH+5], aIR[delayI+5], aJR[delayJ+5];
+    double aKR[delayK+5], aLR[delayL+5], aMR[delayM+5], aNR[delayN+5], aOR[delayO+5];
+    double aPR[delayP+5], aQR[delayQ+5], aRR[delayR+5], aSR[delayS+5], aTR[delayT+5];
+    double aUR[delayU+5], aVR[delayV+5], aWR[delayW+5], aXR[delayX+5], aYR[delayY+5];
 
-//left
-    int shortAL;
-    int shortBL;
-    int shortCL;
-    int shortDL;
-    int shortEL;
-    int shortFL;
-    int shortGL;
-    int shortHL;
-    int shortIL;
-    int shortJL;
-    int shortKL;
-    int shortLL;
-    int shortML;
-    int shortNL;
-    int shortOL;
-    int shortPL;
-//right
-    int shortAR;
-    int shortBR;
-    int shortCR;
-    int shortDR;
-    int shortER;
-    int shortFR;
-    int shortGR;
-    int shortHR;
-    int shortIR;
-    int shortJR;
-    int shortKR;
-    int shortLR;
-    int shortMR;
-    int shortNR;
-    int shortOR;
-    int shortPR;
+    //predelay buffers
+    double aZL[predelay+5], aZR[predelay+5]; 
+    double aVLFL[vlfpredelay+5], aVLFR[vlfpredelay+5]; 
 
-//AGAIN-separating buffers for L and R channels to create a wide stereo field
-//stereo decorrelation, it creates a wider rev by making LR reflections slightly different
-//now instead of doing it for ER, now we do it for the reverb tail, otherwise it'd sound small and boxy
-//this is the main reverb tail delay buffers LR, they control extended decay
+    //feedback
+    double feedbackAL, feedbackBL, feedbackCL, feedbackDL, feedbackEL;
+    double feedbackER, feedbackJR, feedbackOR, feedbackTR, feedbackYR;
 
-    //left channel rev tail
-    double aAL[delayA+5];
-    double aBL[delayB+5];
-    double aCL[delayC+5];
-    double aDL[delayD+5];
-    double aEL[delayE+5];
-    double aFL[delayF+5];
-    double aGL[delayG+5];
-    double aHL[delayH+5];
-    double aIL[delayI+5];
-    double aJL[delayJ+5];
-    double aKL[delayK+5];
-    double aLL[delayL+5];
-    double aML[delayM+5];
-    double aNL[delayN+5];
-    double aOL[delayO+5];
-    double aPL[delayP+5];
-    double aQL[delayQ+5];
-    double aRL[delayR+5];
-    double aSL[delayS+5];
-    double aTL[delayT+5];
-    double aUL[delayU+5];
-    double aVL[delayV+5];
-    double aWL[delayW+5];
-    double aXL[delayX+5];
-    double aYL[delayY+5];
+    double lastRefL[7], lastRefR[7];
 
-    //right channel rev tail
-    double aAR[delayA+5];
-    double aBR[delayB+5];
-    double aCR[delayC+5];
-    double aDR[delayD+5];
-    double aER[delayE+5];
-    double aFR[delayF+5];
-    double aGR[delayG+5];
-    double aHR[delayH+5];
-    double aIR[delayI+5];
-    double aJR[delayJ+5];
-    double aKR[delayK+5];
-    double aLR[delayL+5];
-    double aMR[delayM+5];
-    double aNR[delayN+5];
-    double aOR[delayO+5];
-    double aPR[delayP+5];
-    double aQR[delayQ+5];
-    double aRR[delayR+5];
-    double aSR[delayS+5];
-    double aTR[delayT+5];
-    double aUR[delayU+5];
-    double aVR[delayV+5];
-    double aWR[delayW+5];
-    double aXR[delayX+5];
-    double aYR[delayY+5];
+    //tank counters
+    int countAL, countBL, countCL, countDL, countEL, countFL, countGL, countHL;
+    int countIL, countJL, countKL, countLL, countML, countNL, countOL, countPL;
+    int countQL, countRL, countSL, countTL, countUL, countVL, countWL, countXL, countYL;
 
-    //lets also store pre delay buffers
-    double aZL[predelay+5]; //left
-    double aZR[predelay+5]; //right
+    int countAR, countBR, countCR, countDR, countER, countFR, countGR, countHR;
+    int countIR, countJR, countKR, countLR, countMR, countNR, countOR, countPR;
+    int countQR, countRR, countSR, countTR, countUR, countVR, countWR, countXR, countYR;
 
-    //and low freq reflections too
-    double aVLFL[vlfpredelay+5]; //left
-    double aVLFR[vlfpredelay+5]; //right
+    int countZ, countVLF, cycle;
 
-//now lets store feedback values for the rev tail and reflections
-    //left
-    double feedbackAL;
-    double feedbackBL;
-    double feedbackCL;
-    double feedbackDL;
-    double feedbackEL;
-
-    //right
-    double feedbackER;
-    double feedbackJR;
-    double feedbackOR;
-    double feedbackTR;
-    double feedbackYR;
-
-    double lastRefL[7]; //store last 7 reflection samples for L channel
-    double lastRefR[7]; //store last 7 reflection samples for R channel
-
-//onto circular buffer position counters LR for rev delay lines
-
-    int countAL;
-    int countBL;
-    int countCL;
-    int countDL;
-    int countEL;
-    int countFL;
-    int countGL;
-    int countHL;
-    int countIL;
-    int countJL;
-    int countKL;
-    int countLL;
-    int countML;
-    int countNL;
-    int countOL;
-    int countPL;
-    int countQL;
-    int countRL;
-    int countSL;
-    int countTL;
-    int countUL;
-    int countVL;
-    int countWL;
-    int countXL;
-    int countYL;
-
-    //right
-    int countAR;
-    int countBR;
-    int countCR;
-    int countDR;
-    int countER;
-    int countFR;
-    int countGR;
-    int countHR;
-    int countIR;
-    int countJR;
-    int countKR;
-    int countLR;
-    int countMR;
-    int countNR;
-    int countOR;
-    int countPR;
-    int countQR;
-    int countRR;
-    int countSR;
-    int countTR;
-    int countUR;
-    int countVR;
-    int countWR;
-    int countXR;
-    int countYR;
-
-    int countZ; //pre-delay buffer position tracker
-    int countVLF; //very low freq buffer pos tracker
-    int cycle; //hw often processing updates values
-
-//enum definition for indexing filter stages
     enum {
-      //slew rate controls how fast the signal can change
-      //by controlling it we prevent sudden fast jumps that may create harsh transients and distortion
-      //pearson filter is a type of smoothing filter to remove high freq noise
-      //rev can create harsh and unnatural high freq content
-      //this filter smooths the signal before it's processed by the delay lines
-      //prevents aliasing
-        prevSampL1, prevSlewL1,
-        prevSampR1, prevSlewR1,
-        prevSampL2, prevSlewL2,
-        prevSampR2, prevSlewR2,
-        prevSampL3, prevSlewL3,
-        prevSampR3, prevSlewR3,
-        prevSampL4, prevSlewL4,
-        prevSampR4, prevSlewR4,
-        prevSampL5, prevSlewL5,
-        prevSampR5, prevSlewR5,
-        prevSampL6, prevSlewL6,
-        prevSampR6, prevSlewR6,
-        prevSampL7, prevSlewL7,
-        prevSampR7, prevSlewR7,
-        prevSampL8, prevSlewL8,
-        prevSampR8, prevSlewR8,
-        prevSampL9, prevSlewL9,
-        prevSampR9, prevSlewR9,
-        prevSampL10, prevSlewL10,
-        prevSampR10, prevSlewR10,
-        pear_total  //total number of elements in the enum
+        pear_total = 40
     };
 
-//now declare an array using the enum indices
-    double pearsonFilter[pear_total] = {0.0}; //storagr for previous samples and slew rates
+    double pearsonFilter[pear_total] = {0.0}; 
+    
+    static constexpr int pearStages = 5; 
+    std::vector<double> pearsonFilters[pearStages] = {
+         std::vector<double>(pear_total), std::vector<double>(pear_total),
+         std::vector<double>(pear_total), std::vector<double>(pear_total),
+         std::vector<double>(pear_total)
+    };
 
-//defining pearson filter storage for multiple filtering stages
-    static constexpr int pearStages =6; //number of filter stages
-    static constexpr int pearTotal= pear_total; //match the enum indexing
-
-    std::array<std::array<double, pearTotal>, pearStages> pearsonFilters = {};
-
-    //vibrato mod for stereo processing
     double vibratoL = 0.0, vibratoR = 0.0;
-    double vibA_L = 0.0, vibA_R = 0.0;
-    double vibB_L = 0.0, vibB_R = 0.0;
+    double vibA_L = 0.0, vibA_R = 0.0, vibB_L = 0.0, vibB_R = 0.0;
+    double vib_L = 0.0; // Added missing state var from kCathedral2 logic
 
-    //subharmonic processing dor depth in low frequencies
-    double subL_A = 0.0, subR_A = 0.0;
-    double subL_B = 0.0, subR_B = 0.0;
-    double subL_C = 0.0, subR_C = 0.0;
+    double subL_A = 0.0, subR_A = 0.0, subL_B = 0.0, subR_B = 0.0, subL_C = 0.0, subR_C = 0.0;
+    double subBufferL_A = 0.0, subBufferR_A = 0.0, subBufferL_B = 0.0, subBufferR_B = 0.0, subBufferL_C = 0.0, subBufferR_C = 0.0;
 
-    //buffered subharmonic values for additional processing
-    double subBufferL_A = 0.0, subBufferR_A = 0.0;
-    double subBufferL_B = 0.0, subBufferR_B = 0.0;
-    double subBufferL_C = 0.0, subBufferR_C = 0.0;
-
-    //floating point dithering state for precision
-    uint32_t fpdL,fpdR;
+    uint32_t fpdL, fpdR;
     std::unique_ptr<juce::AudioProcessorValueTreeState> parameters;
 
+  private:
+    juce::String programName;
+    std::set<std::string> _canDo;
+    float mixValue = 0.5f;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ushuaiaVerbAudioProcessor)
+};
+
 #endif //USHUAIAVERB_H
-
-
-

@@ -1,29 +1,38 @@
 #include "ushuaiaVerb/PluginProcessor.h"
 #include "ushuaiaVerb/PluginEditor.h"
+
 //==============================================================================
 AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAudioProcessor& p)
-    : AudioProcessorEditor (&p), processorRef (p)
+    : AudioProcessorEditor (&p)
+    , audioProcessor(p)
+    , mainArea(p.getValueTreeState())
 {
-    juce::ignoreUnused (processorRef);
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
-    setSize (400, 300);
+    //set look and feel
+    setLookAndFeel(&ushuaiaLookAndFeel);
+    
+    //add and make visible the main area
+    addAndMakeVisible(mainArea);
+    
+    //set the plugin window size (800x500)
+    setSize(800, 500);
+    
+    //make the window resizable
+    setResizable(false, false);
 }
+
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
 {
+    setLookAndFeel(nullptr);
 }
+
 //==============================================================================
 void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
 {
-    // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
-
-    g.setColour (juce::Colours::white);
-    g.setFont (15.0f);
-    g.drawFittedText ("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
+    //fill da background
+    g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
 }
+
 void AudioPluginAudioProcessorEditor::resized()
 {
-    // This is generally where you'll want to lay out the positions of any
-    // subcomponents in your editor..
+    mainArea.setBounds(getLocalBounds());
 }

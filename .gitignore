@@ -1,3 +1,7 @@
 build/
 libs/
 cmake-build-debug
+Maim/
+kCathedral/kCathedral2 1.cpp
+kCathedral/kCathedral2 1.h
+kCathedral/kCathedral2Proc 1.cpp
