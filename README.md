@@ -3,7 +3,7 @@
 
 
 ### Overview
-UshuaiaVerb is an algorithmic reverb designed using cascaded delay networks with structured mixing via a **5×5 Householder matrix**. The architecture prioritizes high echo density, efficient diffusion, and stereo decorrelation through asymmetric delay paths.
+UshuaiaVerb is an algorithmic reverb designed using cascaded delay networks with structured mixing via a **5×5 Householder matrix**. The architecture prioritises high echo density, efficient diffusion, and stereo decorrelation through asymmetric delay paths.
 
 
 ### Core Architecture
