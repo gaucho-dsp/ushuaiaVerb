@@ -7,6 +7,8 @@ UshuaiaVerb is an algorithmic reverb designed using cascaded delay networks with
 
 
 ### Core Architecture
+<img width="755" height="284" alt="ushuaiaVerb_BD" src="https://github.com/user-attachments/assets/d0b007f9-7693-4852-90e1-07eb50df6850" />
+
 * **Terminal Diffusion Matrix**: A **5x5 recursive feedback lattice** that maximises echo density without metallic ringing.
 * **Golden Ratio Reflections**: A distinct **4x4 early reflection stage** utilising $\phi$ (0.618...) coefficients for non-resonant diffusion.
 * **Singular Allpass Modulation**: Pitch modulation is applied to a single delay node within the tank, creating subtle motion without inducing 'seasick' pitch drift.
